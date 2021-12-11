@@ -31,7 +31,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
-        extensions: phalcon-5.0.0alpha7, pdo, mysql
+        extensions: phalcon-5.0.0beta1, pdo, mysql
         coverage: none
 
     - name: Validate composer.json and composer.lock
