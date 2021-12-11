@@ -1,0 +1,22 @@
+paths:
+    tests: tests
+    output: tests/_output
+    data: tests/_data
+    support: tests/_support
+    envs: tests/_envs
+actor_suffix: Tester
+bootstrap: _bootstrap.php
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+params:
+    - .env
+modules:
+    enabled:
+        - Db:
+              dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;port=%DB_PORT%'
+              user: '%DB_USERNAME%'
+              password: '%DB_PASSWORD%'
+              populate: no
+              cleanup: true
+              dump: 'tests/_data/structure.sql'

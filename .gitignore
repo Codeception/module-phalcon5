@@ -1,0 +1,5 @@
+/.idea/
+/vendor/
+/framework-tests
+.env
+composer.lock
