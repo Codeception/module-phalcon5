@@ -1,20 +1,20 @@
 <?php
 
-use Phalcon\Session\Manager;
-use Phalcon\Session\Adapter\Stream;
-use Phalcon\Mvc\Application;
-use Phalcon\Mvc\View;
-use Phalcon\DI\FactoryDefault;
 use Phalcon\Db\Adapter\Pdo\Mysql;
+use Phalcon\DI\FactoryDefault;
+use Phalcon\Mvc\Application;
 use Phalcon\Mvc\Url as UrlProvider;
+use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Volt;
+use Phalcon\Session\Adapter\Stream;
+use Phalcon\Session\Manager;
 
 $di = new FactoryDefault();
 $di->setShared(
     'session',
     function () {
         $session = new Manager();
-        $files = new Stream(
+        $files   = new Stream(
             [
                 'savePath' => '/tmp',
             ]
@@ -106,17 +106,23 @@ $router = $di->getRouter();
 $router->add('/', [
     'controller' => 'App\Controllers\Index',
     'action'     => 'index'
-])->setName('front.index');
+])
+       ->setName('front.index')
+;
 
 $router->add('/datetime', [
     'controller' => 'App\Controllers\Datetime',
     'action'     => 'index'
-])->setName('front.datetime');
+])
+       ->setName('front.datetime')
+;
 
 $router->add('/datetime/spl', [
     'controller' => 'App\Controllers\Datetime',
     'action'     => 'spl'
-])->setName('front.spl');
+])
+       ->setName('front.spl')
+;
 
 
 return new Application($di);

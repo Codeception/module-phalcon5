@@ -18,9 +18,12 @@ use Codeception\Util\ReflectionHelper;
 use Exception;
 use PDOException;
 use Phalcon\Di\Di;
-use Phalcon\Di\Injectable;
 use Phalcon\Di\DiInterface;
+use Phalcon\Di\Injectable;
+use Phalcon\Mvc\Application;
+use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Model as PhalconModel;
+use Phalcon\Mvc\Model\MessageInterface;
 use Phalcon\Mvc\ResultsetInterface;
 use Phalcon\Mvc\Router\RouteInterface;
 use Phalcon\Mvc\RouterInterface;
@@ -147,11 +150,12 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * HOOK: before scenario
      *
      * @param TestInterface $test
+     *
      * @throws ModuleException
      */
     public function _before(TestInterface $test)
     {
-        /** @noinspection PhpIncludeInspection */;
+        /** @noinspection PhpIncludeInspection */
         $application = require $this->bootstrapFile;
         if (!$application instanceof Injectable) {
             throw new ModuleException(__CLASS__, 'Bootstrap must return \Phalcon\Di\Injectable object');
@@ -225,8 +229,8 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
     /**
      * Provides access the Phalcon application object.
      *
+     * @return Application|Micro
      * @see \Codeception\Lib\Connector\Phalcon::getApplication
-     * @return \Phalcon\Mvc\Application|\Phalcon\Mvc\Micro
      */
     public function getApplication()
     {
@@ -237,12 +241,15 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * Sets value to session. Use for authorization.
      *
      * @param string $key
-     * @param mixed $val
+     * @param mixed  $val
      */
     public function haveInSession(string $key, $val): void
     {
-        $this->di->get('session')->set($key, $val);
-        $this->debugSection('Session', json_encode($this->di['session']->getAdapter()->toArray()));
+        $this->di->get('session')
+                 ->set($key, $val)
+        ;
+        $this->debugSection('Session', json_encode($this->di['session']->getAdapter()
+                                                                       ->toArray()));
     }
 
     /**
@@ -256,11 +263,12 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * ```
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function seeInSession(string $key, $value = null): void
     {
-        $this->debugSection('Session', json_encode($this->di['session']->getAdapter()->toArray()));
+        $this->debugSection('Session', json_encode($this->di['session']->getAdapter()
+                                                                       ->toArray()));
 
         if (is_array($key)) {
             $this->seeSessionHasValues($key);
@@ -287,7 +295,8 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * $I->seeSessionHasValues(['key1' => 'value1', 'key2' => 'value2']);
      * ```
      *
-     * @param  array $bindings
+     * @param array $bindings
+     *
      * @return void
      */
     public function seeSessionHasValues(array $bindings): void
@@ -310,8 +319,9 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * $I->haveRecord('App\Models\Categories', ['name' => 'Testing']');
      * ```
      *
-     * @param string $model Model name
-     * @param array $attributes Model attributes
+     * @param string $model      Model name
+     * @param array  $attributes Model attributes
+     *
      * @return mixed
      * @part orm
      */
@@ -319,7 +329,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
     {
         $record = $this->getModelRecord($model);
         $record->assign($attributes);
-        $res = $record->save();
+        $res   = $record->save();
         $field = function ($field) {
             if (is_array($field)) {
                 return implode(', ', $field);
@@ -330,9 +340,9 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
 
         if (!$res) {
             $messages = $record->getMessages();
-            $errors = [];
+            $errors   = [];
             foreach ($messages as $message) {
-                /** @var \Phalcon\Mvc\Model\MessageInterface $message */
+                /** @var MessageInterface $message */
                 $errors[] = sprintf(
                     '[%s] %s: %s',
                     $message->getType(),
@@ -359,8 +369,9 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * $I->seeRecord('App\Models\Categories', ['name' => 'Testing']);
      * ```
      *
-     * @param string $model Model name
+     * @param string $model      Model name
      * @param array  $attributes Model attributes
+     *
      * @part orm
      */
     public function seeRecord($model, $attributes = [])
@@ -380,9 +391,10 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * $I->seeNumberOfRecords('App\Models\Categories', 3, ['name' => 'Testing']);
      * ```
      *
-     * @param string $model Model name
-     * @param int $number int number of records
-     * @param array $attributes Model attributes
+     * @param string $model      Model name
+     * @param int    $number     int number of records
+     * @param array  $attributes Model attributes
+     *
      * @part orm
      */
     public function seeNumberOfRecords(string $model, int $number, array $attributes = []): void
@@ -408,8 +420,9 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * $I->dontSeeRecord('App\Models\Categories', ['name' => 'Testing']);
      * ```
      *
-     * @param string $model Model name
-     * @param array $attributes Model attributes
+     * @param string $model      Model name
+     * @param array  $attributes Model attributes
+     *
      * @part orm
      */
     public function dontSeeRecord($model, $attributes = [])
@@ -429,8 +442,9 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * $category = $I->grabRecord('App\Models\Categories', ['name' => 'Testing']);
      * ```
      *
-     * @param string $model Model name
+     * @param string $model      Model name
      * @param array  $attributes Model attributes
+     *
      * @return mixed
      * @part orm
      */
@@ -445,6 +459,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      *
      * @param string $service    Service name
      * @param array  $parameters Parameters [Optional]
+     *
      * @return mixed
      * @part services
      */
@@ -469,9 +484,10 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * }, true);
      * ```
      *
-     * @param string $name
-     * @param mixed $definition
+     * @param string  $name
+     * @param mixed   $definition
      * @param boolean $shared
+     *
      * @return mixed|null
      * @part services
      */
@@ -487,7 +503,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
         }
     }
 
-     /**
+    /**
      * Opens web page using route name and parameters.
      *
      * ``` php
@@ -522,6 +538,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      * <?php
      * $I->seeCurrentRouteIs('posts.index');
      * ```
+     *
      * @param string $routeName
      */
     public function seeCurrentRouteIs(string $routeName): void
@@ -538,10 +555,10 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
     /**
      * Allows to query the first record that match the specified conditions
      *
-     * @param string $model Model name
-     * @param array $attributes Model attributes
+     * @param string $model      Model name
+     * @param array  $attributes Model attributes
      *
-     * @return \Phalcon\Mvc\Model
+     * @return PhalconModel
      */
     protected function findRecord(string $model, array $attributes = [])
     {
@@ -553,7 +570,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
                 $conditions[] = "[$key] IS NULL";
             } else {
                 $conditions[] = "[$key] = :$key:";
-                $bind[$key] = $value;
+                $bind[$key]   = $value;
             }
         }
         $query = implode(' AND ', $conditions);
@@ -569,8 +586,8 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
     /**
      * Allows to query the many records that match the specified conditions
      *
-     * @param string $model Model name
-     * @param array $attributes Model attributes
+     * @param string $model      Model name
+     * @param array  $attributes Model attributes
      *
      * @return ResultsetInterface
      */
@@ -584,7 +601,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
                 $conditions[] = "[$key] IS NULL";
             } else {
                 $conditions[] = "[$key] = :$key:";
-                $bind[$key] = $value;
+                $bind[$key]   = $value;
             }
         }
         $query = implode(' AND ', $conditions);
@@ -602,7 +619,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      *
      * @param $model
      *
-     * @return \Phalcon\Mvc\Model
+     * @return PhalconModel
      * @throws ModuleException
      */
     protected function getModelRecord($model)
@@ -622,7 +639,8 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
     /**
      * Get identity.
      *
-     * @param \Phalcon\Mvc\Model $model
+     * @param PhalconModel $model
+     *
      * @return mixed
      */
     protected function getModelIdentity(PhalconModel $model)
@@ -635,7 +653,8 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
             return null;
         }
 
-        $primaryKeys = $this->di->get('modelsMetadata')->getPrimaryKeyAttributes($model);
+        $primaryKeys = $this->di->get('modelsMetadata')
+                                ->getPrimaryKeyAttributes($model);
 
         switch (count($primaryKeys)) {
             case 0:
@@ -644,7 +663,8 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
                 $primaryKey = $primaryKeys[0];
 
                 // if columnMap is used for model, map database column name to model property name
-                $columnMap = $this->di->get('modelsMetadata')->getColumnMap($model);
+                $columnMap = $this->di->get('modelsMetadata')
+                                      ->getColumnMap($model);
                 if ($columnMap) {
                     $primaryKey = $columnMap[$primaryKey];
                 }

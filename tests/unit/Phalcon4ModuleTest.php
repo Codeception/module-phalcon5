@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-use Codeception\Module\Phalcon5;
 use Codeception\Exception\ModuleConfigException;
+use Codeception\Module\Phalcon5;
+use Codeception\Test\Unit;
+use Codeception\Util\Stub;
 
-final class Phalcon5ModuleTest extends \Codeception\Test\Unit
+final class Phalcon5ModuleTest extends Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
 
@@ -26,8 +28,8 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
 
     protected function getPhalconModule()
     {
-        $container = \Codeception\Util\Stub::make('Codeception\Lib\ModuleContainer');
-        $module = new Phalcon5($container);
+        $container = Stub::make('Codeception\Lib\ModuleContainer');
+        $module    = new Phalcon5($container);
         $module->_setConfig([
             'bootstrap'  => 'tests/_data/bootstrap.php',
             'cleanup'    => true,
@@ -40,8 +42,8 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
 
     protected function getPhalconModuleMicro()
     {
-        $container = \Codeception\Util\Stub::make('Codeception\Lib\ModuleContainer');
-        $module = new Phalcon5($container);
+        $container = Stub::make('Codeception\Lib\ModuleContainer');
+        $module    = new Phalcon5($container);
         $module->_setConfig([
             'bootstrap'  => 'tests/_data/bootstrap-micro.php',
             'cleanup'    => true,
@@ -54,8 +56,8 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
 
     public function testConstruct()
     {
-        $container = \Codeception\Util\Stub::make('Codeception\Lib\ModuleContainer');
-        $module = new Phalcon5($container);
+        $container = Stub::make('Codeception\Lib\ModuleContainer');
+        $module    = new Phalcon5($container);
         $this->assertInstanceOf('Codeception\Module\Phalcon5', $module);
     }
 
@@ -68,7 +70,7 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
     public function testBefore()
     {
         $module = $this->getPhalconModule();
-        $test = new Codeception\Test\Unit();
+        $test   = new Codeception\Test\Unit();
         $module->_before($test);
         $this->assertInstanceOf('Phalcon\Di\Di', $module->di);
     }
@@ -76,7 +78,7 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
     public function testAfter()
     {
         $module = $this->getPhalconModule();
-        $test = new Codeception\Test\Unit();
+        $test   = new Codeception\Test\Unit();
         $module->_before($test);
         $module->_after($test);
         $this->assertNull($module->di);
@@ -91,12 +93,12 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
     public function testGetApplication()
     {
         $module = $this->getPhalconModule();
-        $test = new Codeception\Test\Unit();
+        $test   = new Codeception\Test\Unit();
         $module->_before($test);
         $this->assertInstanceOf('Phalcon\Mvc\Application', $module->getApplication());
 
         $module = $this->getPhalconModuleMicro();
-        $test = new Codeception\Test\Unit();
+        $test   = new Codeception\Test\Unit();
         $module->_before($test);
         $this->assertInstanceOf('Phalcon\Mvc\Micro', $module->getApplication());
 
@@ -106,9 +108,9 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
     public function testSession()
     {
         $module = $this->getPhalconModule();
-        $test = new Codeception\Test\Unit();
+        $test   = new Codeception\Test\Unit();
         $module->_before($test);
-        $key = "phalcon";
+        $key   = "phalcon";
         $value = "Rocks!";
         $module->haveInSession($key, $value);
         $module->seeInSession($key, $value);
@@ -119,7 +121,7 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
     public function testRecords()
     {
         $module = $this->getPhalconModule();
-        $test = new Codeception\Test\Unit();
+        $test   = new Codeception\Test\Unit();
         $module->_before($test);
 
         $module->haveRecord('App\Models\Articles', ['title' => 'phalcon']);
@@ -138,7 +140,7 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
     public function testContainerMethods()
     {
         $module = $this->getPhalconModule();
-        $test = new Codeception\Test\Unit();
+        $test   = new Codeception\Test\Unit();
         $module->_before($test);
 
         $session = $module->grabServiceFromContainer('session');
@@ -146,7 +148,7 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
         $this->assertInstanceOf('Codeception\Lib\Connector\Phalcon5\MemorySession', $session->getAdapter());
 
         $testService = $module->addServiceToContainer('std', function () {
-            return new \stdClass();
+            return new stdClass();
         }, true);
         $this->assertInstanceOf('stdClass', $module->grabServiceFromContainer('std'));
         $this->assertInstanceOf('stdClass', $testService);
@@ -156,7 +158,7 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
     public function testReplaceService()
     {
         $module = $this->getPhalconModule();
-        $test = new Codeception\Test\Unit();
+        $test   = new Codeception\Test\Unit();
         $module->_before($test);
         $diHash = spl_object_hash($module->di);
 
@@ -165,7 +167,7 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
         $this->assertEquals($diHash, spl_object_hash($module->di));
 
         $std = $module->addServiceToContainer('datetime', function () {
-            return new \stdClass();
+            return new stdClass();
         }, false);
         $this->assertInstanceOf('stdClass', $std);
         $this->assertInstanceOf('stdClass', $module->grabServiceFromContainer('datetime'));
@@ -180,7 +182,7 @@ final class Phalcon5ModuleTest extends \Codeception\Test\Unit
     public function testRoutes()
     {
         $module = $this->getPhalconModule();
-        $test = new Codeception\Test\Unit();
+        $test   = new Codeception\Test\Unit();
         $module->_before($test);
 
         $module->amOnRoute('front.index');

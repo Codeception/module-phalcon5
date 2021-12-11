@@ -49,7 +49,7 @@ class MemorySession extends AbstractAdapter
     public function start(): bool
     {
         if ($this->status() !== PHP_SESSION_ACTIVE) {
-            $this->memory = [];
+            $this->memory  = [];
             $this->started = true;
 
             return true;
@@ -86,8 +86,9 @@ class MemorySession extends AbstractAdapter
      * @inheritdoc
      *
      * @param string $index
-     * @param mixed $defaultValue
-     * @param bool $remove
+     * @param mixed  $defaultValue
+     * @param bool   $remove
+     *
      * @return mixed
      */
     public function get(string $index, $defaultValue = null, bool $remove = false)
@@ -111,7 +112,7 @@ class MemorySession extends AbstractAdapter
      * @inheritdoc
      *
      * @param string $index
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function set(string $index, $value): void
     {
@@ -122,6 +123,7 @@ class MemorySession extends AbstractAdapter
      * @inheritdoc
      *
      * @param string $index
+     *
      * @return bool
      */
     public function has(string $index): bool
@@ -184,11 +186,12 @@ class MemorySession extends AbstractAdapter
      * @inheritdoc
      *
      * @param bool $id
+     *
      * @return bool
      */
     public function destroy($id): bool
     {
-        $this->memory = [];
+        $this->memory  = [];
         $this->started = false;
         return true;
     }
@@ -197,6 +200,7 @@ class MemorySession extends AbstractAdapter
      * @inheritdoc
      *
      * @param bool $deleteOldSession
+     *
      * @return AdapterInterface
      */
     public function regenerateId(bool $deleteOldSession = true): AdapterInterface
@@ -240,6 +244,7 @@ class MemorySession extends AbstractAdapter
      * Alias: Gets a session variable from an application context
      *
      * @param string $index
+     *
      * @return mixed
      */
     public function __get(string $index)
@@ -251,7 +256,7 @@ class MemorySession extends AbstractAdapter
      * Alias: Sets a session variable in an application context
      *
      * @param string $index
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function __set(string $index, $value): void
     {
@@ -262,6 +267,7 @@ class MemorySession extends AbstractAdapter
      * Alias: Check whether a session variable is set in an application context
      *
      * @param string $index
+     *
      * @return bool
      */
     public function __isset(string $index): bool

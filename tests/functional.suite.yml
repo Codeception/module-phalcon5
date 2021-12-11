@@ -7,18 +7,18 @@
 
 actor: FunctionalTester
 modules:
-    enabled:
-        # add a framework module here
-        - \Helper\Functional
-        - Db:
-              dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;port=%DB_PORT%'
-              user: '%DB_USERNAME%'
-              password: '%DB_PASSWORD%'
-              populate: no
-              cleanup: true
-              dump: 'tests/_data/structure.sql'
-        - Phalcon5:
-              bootstrap: tests/_data/bootstrap.php
-              cleanup: true
-              savepoints: true
-    step_decorators: ~
+  enabled:
+    # add a framework module here
+    - \Helper\Functional
+    - Db:
+        dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;port=%DB_PORT%'
+        user: '%DB_USERNAME%'
+        password: '%DB_PASSWORD%'
+        populate: no
+        cleanup: true
+        dump: 'tests/_data/structure.sql'
+    - Phalcon5:
+        bootstrap: tests/_data/bootstrap.php
+        cleanup: true
+        savepoints: true
+  step_decorators: ~

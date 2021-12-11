@@ -25,6 +25,7 @@ class Phalcon5 extends AbstractBrowser
 
     /**
      * Phalcon Application
+     *
      * @var mixed
      */
     private $application;
@@ -87,9 +88,9 @@ class Phalcon5 extends AbstractBrowser
         $pathString  = parse_url($uri, PHP_URL_PATH);
         $queryString = parse_url($uri, PHP_URL_QUERY);
 
-        $_SERVER = $request->getServer();
+        $_SERVER                   = $request->getServer();
         $_SERVER['REQUEST_METHOD'] = strtoupper($request->getMethod());
-        $_SERVER['REQUEST_URI'] = null === $queryString ? $pathString : $pathString . '?' . $queryString;
+        $_SERVER['REQUEST_URI']    = null === $queryString ? $pathString : $pathString . '?' . $queryString;
 
         $_COOKIE  = $request->getCookies();
         $_FILES   = $this->remapFiles($request->getFiles());
@@ -125,7 +126,7 @@ class Phalcon5 extends AbstractBrowser
         }
 
         $headers = $response->getHeaders();
-        $status = (int) $headers->get('Status');
+        $status  = (int) $headers->get('Status');
 
         $headersProperty = new ReflectionProperty($headers, 'headers');
         $headersProperty->setAccessible(true);
@@ -146,16 +147,16 @@ class Phalcon5 extends AbstractBrowser
             $valueProperty->setAccessible(true);
             foreach ($cookies as $name => $cookie) {
                 if (!$restoredProperty->getValue($cookie)) {
-                    $clientCookie = new Cookie(
+                    $clientCookie            = new Cookie(
                         $name,
                         $valueProperty->getValue($cookie),
-                        (string)$cookie->getExpiration(),
+                        (string) $cookie->getExpiration(),
                         $cookie->getPath(),
                         $cookie->getDomain(),
                         $cookie->getSecure(),
                         $cookie->getHttpOnly()
                     );
-                    $headers['Set-Cookie'][] = (string)$clientCookie;
+                    $headers['Set-Cookie'][] = (string) $clientCookie;
                 }
             }
         }

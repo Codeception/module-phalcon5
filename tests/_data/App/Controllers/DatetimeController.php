@@ -8,7 +8,8 @@ class DatetimeController extends Controller
 {
     public function indexAction()
     {
-        echo "class: " . get_class($this->getDI()->get('datetime'));
+        echo "class: " . get_class($this->getDI()
+                                        ->get('datetime'));
     }
 
     public function splAction()

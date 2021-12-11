@@ -1,4 +1,7 @@
 <?php
 
-$di = new \Phalcon\DI\FactoryDefault();
-return new \Phalcon\Mvc\Micro($di);
+use Phalcon\DI\FactoryDefault;
+use Phalcon\Mvc\Micro;
+
+$di = new FactoryDefault();
+return new Micro($di);

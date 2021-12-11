@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 use Codeception\Lib\Connector\Phalcon5 as PhalconConnector;
 use Codeception\Module\Phalcon5;
+use Codeception\Test\Unit;
+use Codeception\Util\Stub;
 use Symfony\Component\BrowserKit\Request;
 
-final class Phalcon5ConnectorTest extends \Codeception\Test\Unit
+final class Phalcon5ConnectorTest extends Unit
 {
     protected function getPhalconModule(): Phalcon5
     {
-        $container = \Codeception\Util\Stub::make('Codeception\Lib\ModuleContainer');
-        $module = new Phalcon5($container);
+        $container = Stub::make('Codeception\Lib\ModuleContainer');
+        $module    = new Phalcon5($container);
         $module->_setConfig([
             'bootstrap'  => 'tests/_data/bootstrap.php',
             'cleanup'    => true,
@@ -31,30 +33,30 @@ final class Phalcon5ConnectorTest extends \Codeception\Test\Unit
     public function testDoRequest(): void
     {
         $module = $this->getPhalconModule();
-        $test = new Codeception\Test\Unit();
+        $test   = new Codeception\Test\Unit();
         $module->_before($test);
 
         $connector = $module->client;
 
         // parameters for Request object
-        $uri = '/';
-        $method = 'GET';
-        $params = [
-            'first' => 'one',
+        $uri     = '/';
+        $method  = 'GET';
+        $params  = [
+            'first'  => 'one',
             'second' => 'two'
         ];
-        $files = [
+        $files   = [
             'file' => [
-                'name' => 'SomeFile.ext',
+                'name'     => 'SomeFile.ext',
                 'tmp_name' => 'SomeFile.ext',
-                'error' => false
+                'error'    => false
             ]
         ];
         $cookies = [
             'token' => 'asdev257'
         ];
-        $server = [
-            'HTTP_HOST' => 'localhost',
+        $server  = [
+            'HTTP_HOST'   => 'localhost',
             'SERVER_NAME' => 'my pc',
             'SERVER_ADDR' => '127.0.0.1',
         ];
@@ -74,7 +76,7 @@ final class Phalcon5ConnectorTest extends \Codeception\Test\Unit
         $response = $connector->doRequest($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        /** @var Phalcon\Http\Request $requestService*/
+        /** @var Phalcon\Http\Request $requestService */
         $requestService = $module->grabServiceFromContainer('request');
 
         // assert request uri

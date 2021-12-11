@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 use Codeception\Lib\Connector\Phalcon5\MemorySession;
+use Codeception\Test\Unit;
 use Codeception\Util\Autoload;
 
-final class MemorySessionTest extends \Codeception\Test\Unit
+final class MemorySessionTest extends Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
 
@@ -49,9 +50,9 @@ final class MemorySessionTest extends \Codeception\Test\Unit
     public function testSetOptions()
     {
         $session = new MemorySession();
-        $data = [
+        $data    = [
             'uniqueId' => "test",
-            'name' => "Ruud",
+            'name'     => "Ruud",
         ];
         $session->setOptions($data);
         $this->assertEquals($data, $session->getOptions());
@@ -61,7 +62,7 @@ final class MemorySessionTest extends \Codeception\Test\Unit
     public function testName()
     {
         $session = new MemorySession();
-        $name = "phalcon";
+        $name    = "phalcon";
         $session->setName($name);
         $this->assertEquals($name, $session->getName());
     }
@@ -70,7 +71,7 @@ final class MemorySessionTest extends \Codeception\Test\Unit
     {
         $session = new MemorySession();
         $session->start();
-        $user = "phalcon";
+        $user          = "phalcon";
         $session->user = $user;
         $this->assertEquals($user, $session->user);
         $session->destroy($session->getId());
