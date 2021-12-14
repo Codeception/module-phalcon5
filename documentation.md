@@ -1,7 +1,7 @@
 # Phalcon
 
 
-This module provides integration with [Phalcon framework](http://www.phalcon.io/) (4.x).
+This module provides integration with [Phalcon framework](http://www.phalcon.io/) (5.x).
 Please try it and leave your feedback.
 
 ## Demo Project
@@ -10,7 +10,7 @@ Please try it and leave your feedback.
 
 ## Status
 
-* Maintainer: **Ruud Boon**
+* Maintainer: **Nikolaos Dimopoulos**
 * Stability: **stable**
 * Contact: team@phalcon.io
 
@@ -32,11 +32,11 @@ The application bootstrap file must return Application object but not call its h
 
 ## Parts
 
-By default all available methods are loaded, but you can specify parts to select only needed
+By default, all available methods are loaded, but you can specify parts to select only needed
 actions and avoid conflicts.
 
 * `orm` - include only `haveRecord/grabRecord/seeRecord/dontSeeRecord` actions.
-* `services` - allows to use `grabServiceFromContainer` and `addServiceToContainer`.
+* `services` - allows using `grabServiceFromContainer` and `addServiceToContainer`.
 
 Usage example:
 
@@ -122,7 +122,7 @@ public function seeResponseContains($text)
 *hidden API method, expected to be used from Helper classes*
  
 Opens a page with arbitrary request parameters.
-Useful for testing multi-step forms on a specific step.
+Useful for testing multistep forms on a specific step.
 
 ```php
 <?php
@@ -188,7 +188,7 @@ $this->getModule('Phalcon')->_savePageSource(codecept_output_dir().'page.html');
 ### addServiceToContainer
  
 Registers a service in the services container and resolve it. This record will be erased after the test.
-Recommended to use for unit testing.
+Recommended using for unit testing.
 
 ``` php
 <?php
@@ -486,7 +486,7 @@ $I->dontSeeInFormFields('.form-class', [
 ?>
 ```
 
-Additionally, checkbox values can be checked with a boolean.
+Additionally, checkbox values can be checked with a boolean value.
 
 ``` php
 <?php
@@ -700,7 +700,7 @@ $category = $I->grabRecord('App\Models\Categories', ['name' => 'Testing']);
 ### grabServiceFromContainer
  
 Resolves the service based on its configuration from Phalcon's DI container
-Recommended to use for unit testing.
+Recommended using for unit testing.
 
  * `param string` $service    Service name
  * `param array`  $parameters Parameters [Optional]
@@ -1531,4 +1531,4 @@ $I->uncheckOption('#notify');
 
  * `param` $option
 
-<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/module-phalcon/tree/master/src/Codeception/Module/Phalcon.php">Help us to improve documentation. Edit module reference</a></div>
+<p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/module-phalcon5/tree/main/src/Codeception/Module/Phalcon.php">Help us to improve documentation. Edit module reference</a></div>
