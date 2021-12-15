@@ -1,6 +1,6 @@
 {
 	"name": "codeception/module-phalcon5",
-	"description": "Codeception module for Phalcon 4 framework",
+	"description": "Codeception module for Phalcon 5 framework",
 	"keywords": [ "codeception", "phalcon", "phalcon5" ],
 	"homepage": "https://codeception.com/",
 	"type": "library",
@@ -18,7 +18,7 @@
 		}
 	],
 	"require": {
-		"php": ">=7.2.0",
+		"php": ">=7.4.0",
 		"ext-json": "*",
 		"codeception/codeception": "^4.0",
 		"codeception/lib-innerbrowser": "^1.0",
