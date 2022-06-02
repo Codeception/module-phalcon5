@@ -10,7 +10,7 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: phalcon
         ports:
           - 3306:3306
