@@ -1,7 +1,7 @@
 # Phalcon
 
 
-This module provides integration with [Phalcon framework](http://www.phalcon.io/) (5.x).
+This module provides integration with [Phalcon framework](https://www.phalcon.io/) (5.x).
 Please try it and leave your feedback.
 
 ## Demo Project
