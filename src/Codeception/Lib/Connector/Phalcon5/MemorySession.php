@@ -5,34 +5,34 @@ declare(strict_types=1);
 namespace Codeception\Lib\Connector\Phalcon5;
 
 use Phalcon\Session\Adapter\AbstractAdapter;
-use Phalcon\Session\AdapterInterface;
+use SessionHandlerInterface;
 
 class MemorySession extends AbstractAdapter
 {
     /**
      * @var string
      */
-    protected $sessionId;
+    protected string $sessionId;
 
     /**
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @var bool
      */
-    protected $started = false;
+    protected bool $started = false;
 
     /**
      * @var array
      */
-    protected $memory = [];
+    protected array $memory = [];
 
     /**
      * @var array
      */
-    protected $options = [];
+    protected array $options = [];
 
     public function __construct(array $options = null)
     {
@@ -201,9 +201,9 @@ class MemorySession extends AbstractAdapter
      *
      * @param bool $deleteOldSession
      *
-     * @return AdapterInterface
+     * @return SessionHandlerInterface
      */
-    public function regenerateId(bool $deleteOldSession = true): AdapterInterface
+    public function regenerateId(bool $deleteOldSession = true): SessionHandlerInterface
     {
         $this->sessionId = $this->generateId();
 
