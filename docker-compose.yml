@@ -22,7 +22,7 @@ services:
     container_name: module-phalcon5-mysql
     image: mysql:5.7
     environment:
-      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=password
       - MYSQL_USER=phalcon
       - MYSQL_DATABASE=phalcon
-      - MYSQL_PASSWORD=secret
+      - MYSQL_PASSWORD=password
