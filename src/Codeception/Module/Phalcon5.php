@@ -32,12 +32,12 @@ use Phalcon\Session\Manager;
 use Symfony\Component\BrowserKit\AbstractBrowser;
 
 /**
- * This module provides integration with [Phalcon framework](https://www.phalcon.io/) (4.x).
+ * This module provides integration with [Phalcon framework](https://www.phalcon.io/) (5.x).
  * Please try it and leave your feedback.
  *
  * ## Status
  *
- * * Maintainer: **Ruud Boon**
+ * * Maintainer: **Nikolaos Dimopoulos**
  * * Stability: **stable**
  * * Contact: team@phalcon.io
  *
@@ -59,7 +59,7 @@ use Symfony\Component\BrowserKit\AbstractBrowser;
  *
  * ## Parts
  *
- * By default all available methods are loaded, but you can specify parts to select only needed
+ * By default, all available methods are loaded, but you can specify parts to select only needed
  * actions and avoid conflicts.
  *
  * * `orm` - include only `haveRecord/grabRecord/seeRecord/dontSeeRecord` actions.
