@@ -21,7 +21,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(BASE_PATH);
 $dotenv->load();
 
 echo "ENV: " . APPLICATION_ENV . PHP_EOL;
-echo "DB_HOST: " . getenv('DB_HOST') . ":" . getenv('DB_PORT') . PHP_EOL;
+echo "DB_HOST: " . $_ENV['DB_HOST'] . ":" . $_ENV['DB_PORT'] . PHP_EOL;
 
 
 Autoload::addNamespace(
