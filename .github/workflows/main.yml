@@ -43,6 +43,6 @@ jobs:
     - name: Run test suite
       run: |
         php -r "file_exists('.env') || copy('.env.example', '.env');"
-        php -r "require_once('../../vendor/autoload.php'); var_dump(Dotenv\Dotenv::create(Dotenv\Repository\RepositoryBuilder::createWithDefaultAdapters()->make(), '../../', '.env')->load());";
+        php -r "require_once('./vendor/autoload.php'); var_dump(Dotenv\Dotenv::create(Dotenv\Repository\RepositoryBuilder::createWithDefaultAdapters()->make(), './', '.env')->load());";
         php vendor/bin/codecept build
         php vendor/bin/codecept run unit
