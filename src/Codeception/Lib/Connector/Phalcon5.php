@@ -6,7 +6,7 @@ namespace Codeception\Lib\Connector;
 
 use Closure;
 use Codeception\Lib\Connector\Shared\PhpSuperGlobalsConverter;
-use Codeception\Util\Stub;
+use Codeception\Stub;
 use Phalcon\Di\Di;
 use Phalcon\Http;
 use Phalcon\Mvc\Application;

@@ -31,11 +31,11 @@ $di->set(
     function () {
         return new Mysql(
             [
-                'host'     => getenv('DB_HOST'),
-                'port'     => getenv('DB_PORT'),
-                'username' => getenv('DB_USERNAME'),
-                'password' => getenv('DB_PASSWORD'),
-                'dbname'   => getenv('DB_NAME'),
+                'host'     => $_ENV['DB_HOST'] ?? '127.0.0.1',
+                'port'     => $_ENV['DB_PORT'] ?? 3306,
+                'username' => $_ENV['DB_USERNAME'] ?? 'phalcon',
+                'password' => $_ENV['DB_PASSWORD'] ?? '',
+                'dbname'   => $_ENV['DB_NAME'] ?? 'phalcon',
             ]
         );
     }

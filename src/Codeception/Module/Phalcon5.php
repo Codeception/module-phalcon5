@@ -23,19 +23,21 @@ use Phalcon\Di\Injectable;
 use Phalcon\Mvc\Application;
 use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Model as PhalconModel;
-use Phalcon\Mvc\Model\MessageInterface;
-use Phalcon\Mvc\ResultsetInterface;
+use Phalcon\Messages\MessageInterface;
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Router\RouteInterface;
 use Phalcon\Mvc\RouterInterface;
 use Phalcon\Mvc\Url;
+use Phalcon\Session\Manager;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 
 /**
- * This module provides integration with [Phalcon framework](https://www.phalcon.io/) (4.x).
+ * This module provides integration with [Phalcon framework](https://www.phalcon.io/) (5.x).
  * Please try it and leave your feedback.
  *
  * ## Status
  *
- * * Maintainer: **Ruud Boon**
+ * * Maintainer: **Nikolaos Dimopoulos**
  * * Stability: **stable**
  * * Contact: team@phalcon.io
  *
@@ -57,7 +59,7 @@ use Phalcon\Mvc\Url;
  *
  * ## Parts
  *
- * By default all available methods are loaded, but you can specify parts to select only needed
+ * By default, all available methods are loaded, but you can specify parts to select only needed
  * actions and avoid conflicts.
  *
  * * `orm` - include only `haveRecord/grabRecord/seeRecord/dontSeeRecord` actions.
@@ -96,7 +98,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
     /**
      * @var array
      */
-    protected $config = [
+    protected array $config = [
         'bootstrap'  => 'app/config/bootstrap.php',
         'cleanup'    => true,
         'savepoints' => true,
@@ -106,21 +108,21 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
     /**
      * Phalcon bootstrap file path
      */
-    protected $bootstrapFile = null;
+    protected ?string $bootstrapFile = null;
 
     /**
      * Dependency injection container
      *
      * @var DiInterface
      */
-    public $di = null;
+    public ?DiInterface $di = null;
 
     /**
      * Phalcon Connector
      *
      * @var PhalconConnector
      */
-    public $client;
+    public ?AbstractBrowser $client;
 
     /**
      * HOOK: used after configuration is loaded
@@ -158,7 +160,10 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
         /** @noinspection PhpIncludeInspection */
         $application = require $this->bootstrapFile;
         if (!$application instanceof Injectable) {
-            throw new ModuleException(__CLASS__, 'Bootstrap must return \Phalcon\Di\Injectable object');
+            throw new ModuleException(
+                __CLASS__,
+                'Bootstrap must return \Phalcon\Di\Injectable object'
+            );
         }
 
         $this->di = $application->getDI();
@@ -221,7 +226,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
         $_SESSION = $_FILES = $_GET = $_POST = $_COOKIE = $_REQUEST = [];
     }
 
-    public function _parts()
+    public function _parts(): array
     {
         return ['orm', 'services'];
     }
@@ -248,8 +253,12 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
         $this->di->get('session')
                  ->set($key, $val)
         ;
-        $this->debugSection('Session', json_encode($this->di['session']->getAdapter()
-                                                                       ->toArray()));
+        $this->debugSection(
+            'Session',
+            json_encode(
+                $this->di['session']->getAdapter()->toArray()
+            )
+        );
     }
 
     /**
@@ -267,8 +276,12 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      */
     public function seeInSession(string $key, $value = null): void
     {
-        $this->debugSection('Session', json_encode($this->di['session']->getAdapter()
-                                                                       ->toArray()));
+        $this->debugSection(
+            'Session',
+            json_encode(
+                $this->di['session']->getAdapter()->toArray()
+            )
+        );
 
         if (is_array($key)) {
             $this->seeSessionHasValues($key);
@@ -351,7 +364,13 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
                 );
             }
 
-            $this->fail(sprintf("Record %s was not saved. Messages: \n%s", $model, implode(PHP_EOL, $errors)));
+            $this->fail(
+                sprintf(
+                    "Record %s was not saved. Messages: \n%s",
+                    $model,
+                    implode(PHP_EOL, $errors)
+                )
+            );
 
             return null;
         }
@@ -374,7 +393,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      *
      * @part orm
      */
-    public function seeRecord($model, $attributes = [])
+    public function seeRecord(string $model, array $attributes = []): void
     {
         $record = $this->findRecord($model, $attributes);
         if (!$record) {
@@ -425,12 +444,14 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      *
      * @part orm
      */
-    public function dontSeeRecord($model, $attributes = [])
+    public function dontSeeRecord(string $model, array $attributes = []): void
     {
         $record = $this->findRecord($model, $attributes);
         $this->debugSection($model, json_encode($record));
         if ($record) {
-            $this->fail("Unexpectedly managed to find $model with " . json_encode($attributes));
+            $this->fail(
+                "Unexpectedly managed to find $model with " . json_encode($attributes)
+            );
         }
     }
 
@@ -625,12 +646,18 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
     protected function getModelRecord($model)
     {
         if (!class_exists($model)) {
-            throw new ModuleException(__CLASS__, "Model $model does not exist");
+            throw new ModuleException(
+                __CLASS__,
+                "Model $model does not exist"
+            );
         }
 
         $record = new $model();
         if (!$record instanceof PhalconModel) {
-            throw new ModuleException(__CLASS__, "Model $model is not instance of \\Phalcon\\Mvc\\Model");
+            throw new ModuleException(
+                __CLASS__,
+                "Model $model is not instance of \\Phalcon\\Mvc\\Model"
+            );
         }
 
         return $record;
@@ -662,7 +689,8 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
             case 1:
                 $primaryKey = $primaryKeys[0];
 
-                // if columnMap is used for model, map database column name to model property name
+                // if columnMap is used for model, map database column name to
+                // model property name
                 $columnMap = $this->di->get('modelsMetadata')
                                       ->getColumnMap($model);
                 if ($columnMap) {
@@ -685,7 +713,7 @@ class Phalcon5 extends Framework implements ActiveRecord, PartedModule
      *
      * @return array
      */
-    protected function getInternalDomains()
+    protected function getInternalDomains(): array
     {
         $internalDomains = [$this->getApplicationDomainRegex()];
 

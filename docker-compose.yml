@@ -1,11 +1,28 @@
-version: '2.1'
+# For local development only.
+version: '3'
 
 services:
+  module-phalcon5-8.0:
+    container_name: module-phalcon5-8.0
+    hostname: module-phalcon5-80
+    build: docker/8.0
+    working_dir: /srv
+    volumes:
+      - .:/srv
+
+  module-phalcon5-8.1:
+    container_name: module-phalcon5-8.1
+    hostname: module-phalcon5-81
+    build: docker/8.1
+    working_dir: /srv
+    volumes:
+      - .:/srv
+
   mysql:
-    restart: always
+    container_name: module-phalcon5-mysql
     image: mysql:5.7
-    ports:
-      - 3306:3306
     environment:
-      - MYSQL_DATABASE=phalcon
       - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=phalcon
+      - MYSQL_DATABASE=phalcon
+      - MYSQL_PASSWORD=password

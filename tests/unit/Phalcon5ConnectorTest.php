@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Codeception\Lib\Connector\Phalcon5 as PhalconConnector;
 use Codeception\Module\Phalcon5;
 use Codeception\Test\Unit;
-use Codeception\Util\Stub;
+use Codeception\Stub;
 use Symfony\Component\BrowserKit\Request;
 
 final class Phalcon5ConnectorTest extends Unit

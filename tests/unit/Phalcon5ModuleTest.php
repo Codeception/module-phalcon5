@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Codeception\Exception\ModuleConfigException;
 use Codeception\Module\Phalcon5;
 use Codeception\Test\Unit;
-use Codeception\Util\Stub;
+use Codeception\Stub;
 
 final class Phalcon5ModuleTest extends Unit
 {
