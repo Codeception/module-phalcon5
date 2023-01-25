@@ -56,7 +56,7 @@ return new \Phalcon\Mvc\Application($di);
 actor: AcceptanceTester
 modules:
     enabled:
-        - Phalcon:
+        - Phalcon5:
             part: services
             bootstrap: 'app/config/bootstrap.php'
             cleanup: true
@@ -82,10 +82,10 @@ Use it in Helpers or GroupObject or Extension classes:
 
 ```php
 <?php
-$els = $this->getModule('Phalcon')->_findElements('.items');
-$els = $this->getModule('Phalcon')->_findElements(['name' => 'username']);
+$els = $this->getModule('Phalcon5')->_findElements('.items');
+$els = $this->getModule('Phalcon5')->_findElements(['name' => 'username']);
 
-$editLinks = $this->getModule('Phalcon')->_findElements(['link' => 'Edit']);
+$editLinks = $this->getModule('Phalcon5')->_findElements(['link' => 'Edit']);
 // now you can iterate over $editLinks and check that all them have valid hrefs
 ```
 
@@ -108,7 +108,7 @@ Use it in Helpers when you want to retrieve response of request performed by ano
 // in Helper class
 public function seeResponseContains($text)
 {
-   $this->assertStringContainsString($text, $this->getModule('Phalcon')->_getResponseContent(), "response contains");
+   $this->assertStringContainsString($text, $this->getModule('Phalcon5')->_getResponseContent(), "response contains");
 }
 ?>
 ```
@@ -128,7 +128,7 @@ Useful for testing multistep forms on a specific step.
 <?php
 // in Helper class
 public function openCheckoutFormStep2($orderId) {
-    $this->getModule('Phalcon')->_loadPage('POST', '/checkout/step2', ['order' => $orderId]);
+    $this->getModule('Phalcon5')->_loadPage('POST', '/checkout/step2', ['order' => $orderId]);
 }
 ?>
 ```
@@ -153,7 +153,7 @@ Returns a string with response body.
 <?php
 // in Helper class
 public function createUserByApi($name) {
-    $userData = $this->getModule('Phalcon')->_request('POST', '/api/v1/users', ['name' => $name]);
+    $userData = $this->getModule('Phalcon5')->_request('POST', '/api/v1/users', ['name' => $name]);
     $user = json_decode($userData);
     return $user->id;
 }
@@ -180,7 +180,7 @@ To load arbitrary page for interaction, use `_loadPage` method.
 Saves page source of to a file
 
 ```php
-$this->getModule('Phalcon')->_savePageSource(codecept_output_dir().'page.html');
+$this->getModule('Phalcon5')->_savePageSource(codecept_output_dir().'page.html');
 ```
  * `param` $filename
 
