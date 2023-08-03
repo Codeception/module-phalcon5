@@ -118,7 +118,8 @@ class Phalcon5 extends AbstractBrowser
         if ($di->has('request')) {
             $di->remove('request');
         }
-        $di['request'] = Stub::construct($phRequest, [], ['getRawBody' => $request->getContent()]);
+        $requestContent = $request->getContent() ?: '';
+        $di['request'] = Stub::construct($phRequest, [], ['getRawBody' => $requestContent]);
 
         $response = $application->handle($pathString);
         if (!$response instanceof Http\ResponseInterface) {
