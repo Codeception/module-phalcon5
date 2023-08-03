@@ -21,17 +21,17 @@ jobs:
           --health-retries 5
     strategy:
       matrix:
-        php: [8.0, 8.1]
+        php: [8.0, 8.1, 8.2]
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
-        extensions: phalcon-5.0.0RC1, pdo, mysql
+        extensions: phalcon-5.0.0, pdo, mysql
         coverage: none
 
     - name: Validate composer.json and composer.lock

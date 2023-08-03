@@ -20,14 +20,14 @@
 	"require": {
 		"php": ">=8.0",
 		"ext-json": "*",
-		"codeception/codeception": "^5.0.0-RC1",
+		"codeception/codeception": "^5.0.0",
 		"codeception/module-asserts": "^3.0",
 		"codeception/module-phpbrowser": "^3.0",
 		"codeception/module-db": "^3.0"
 	},
 	"require-dev": {
 		"codeception/util-robohelpers": "dev-master",
-		"phalcon/ide-stubs": "^5.0.0RC1",
+		"phalcon/ide-stubs": "^5.0.0",
 		"squizlabs/php_codesniffer": "^3.6",
 		"vimeo/psalm": "^4.23",
 		"vlucas/phpdotenv": "^5.4"
