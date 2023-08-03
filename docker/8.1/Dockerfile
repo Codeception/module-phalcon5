@@ -1,11 +1,11 @@
 FROM composer:latest as composer
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 ADD ./extra.ini /usr/local/etc/php/conf.d/
 
 # User/Group globals
 ENV PHP_VERSION="8.1" \
-	PHALCON_VERSION="5.0.0RC1"
+	PHALCON_VERSION="5.2.3"
 
 # Update
 RUN apt update -y && \
